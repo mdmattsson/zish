@@ -90,8 +90,8 @@ function show_header()
 #clean previous
 function clean_zdotdir()
 {
-        [[ ! -d ${HOME}/.config ]] && mkdir .config &> /dev/null
         doprint  "$fg[cyan]INSTALLER:$fg[default] removing old shell files..."
+        [[ ! -d ${HOME}/.config ]] && mkdir .config &> /dev/null
         [[ -d ${USER_SHELL_DIR} ]] && rm -rf ${USER_SHELL_DIR} &> /dev/null
         [[ ! -d ${USER_SHELL_DIR} ]] && mkdir -p ${USER_SHELL_DIR}  &> /dev/null
         #rename/backup existing zshrc
@@ -237,14 +237,6 @@ function add_plugin_autojump()
         doprint "$fg[green]Done.$fg[default]\n"
 }
 
-function add_plugin_powerlevel10k()
-{
-        #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
-        echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
-        echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
-        doprint "$fg[green]Done.$fg[default]\n"
-}
 
 function add_plugin_highlighting()
 {
@@ -276,13 +268,22 @@ function add_plugin_sudo()
         doprint "$fg[green]Done.$fg[default]\n"
 }
 
+function add_plugin_powerlevel10k()
+{
+        #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k
+        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
+        echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
+        echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
+        echo "# To customize prompt, run `p10k configure` or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
+        echo "[[ ! -f $$ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
+        doprint "$fg[green]Done.$fg[default]\n"
+}
+
 function add_userpath_to_zshenv()
 {
         PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
         echo "export PATH=$USER_PATH:$PATH" >> ${ZDOTDIR}/.zshenv
 }
-
-
 
 show_header
 #maintenance stuff

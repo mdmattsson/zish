@@ -54,8 +54,8 @@ function show_header()
 {
         clear
         doprint "$fg_bold[red]ZISH $fg[default]\n"
-        doprint "$fg[cyan]Michael's Little ZSH Environment Setup Script$fg[default]\n"
-        doprint "This script will setup the zsh environment in the user's \$HOME/.config/zsh\n"
+        doprint "$fg[cyan]Michael's ZSH Environment Setup Script.$fg[default]\n"
+        doprint "This script will setup the zsh environment in the user's \$HOME/.config/zish/zsh\n"
         doprint "folder to keep things clean.\n"
         doprint "\n"
         doprint "running under $fg[yellow]${OPSYS}$fg[default]\n"
@@ -270,7 +270,7 @@ function add_plugin_sudo()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
-        mkdir ${USER_PLUGIN_DIR}/sudo && pushd ${USER_PLUGIN_DIR}/sudo && { curl -O $SUDO_URL ; popd; }
+        mkdir ${USER_PLUGIN_DIR}/sudo && pushd ${USER_PLUGIN_DIR}/sudo && { curl -O $SUDO_URL &> /dev/null; popd; }
         echo "# Load sudo" >> ${ZDOTDIR}/.zshrc
         echo "source ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> ${ZDOTDIR}/.zshrc
         doprint "$fg[green]Done.$fg[default]\n"
@@ -303,5 +303,6 @@ add_plugin_sudo
 #final zsh settings...
 add_userpath_to_zshenv
 
-doprint  "\n$fg[yellow]please quit and restart iterm$fg[default].\n"
+doprint  "\n$fg_bold[green]ZISH$fg[green] installation completed.$fg[default].\n"
+doprint  "$fg[yellow]please quit and restart iterm$fg[default].\n"
  

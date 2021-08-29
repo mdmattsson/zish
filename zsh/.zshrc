@@ -77,4 +77,3 @@ for f in $ZDOTDIR/aliases/*; do source $f; done
 
 # To customize prompt, run `p10k configure` or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh.
 [[ ! -f $$ZDOTDIR/.p10k.zsh ]] || source $$ZDOTDIR/.p10k.zsh
-

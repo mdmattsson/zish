@@ -198,7 +198,7 @@ function install_fonts()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm fonts..."
         git clone https://github.com/powerline/fonts.git $ZDOTDIR/fonts &> /dev/null
-        if [[ -f $ZDOTDIR}fonts/install.sh ]]; then
+        if [[ -f $ZDOTDIR/fonts/install.sh ]]; then
                 pushd $ZDOTDIR/fonts
                 ./install.sh &> /dev/null
                 popd

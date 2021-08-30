@@ -103,10 +103,8 @@ function clean_zdotdir()
                 cp -R ${REPO_SOURCE}/* ${USER_SHELL_DIR} &> /dev/null
         else
                 [[ -d ${USER_SHELL_DIR} ]] && mkdir -p ${USER_SHELL_DIR} &> /dev/null
-                pushd $HOME/.config
-                git clone --recurse-submodules ${REPO_SOURCE} &> /dev/null
-                #source $ZDOTDIR/.zshrc
-                popd
+                git clone --recurse-submodules ${REPO_SOURCE} $HOME/.config/zish &> /dev/null
+                #source $ZDOTDIR/.zshenv
         fi
         doprint "$fg[green]Done.$fg[default]\n"
 }
@@ -125,7 +123,7 @@ function setup_zdotdir_stuff()
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] creating new zprofile link..."
         if windows; then
                 cp -p $ZDOTDIR/.zshenv $HOME/.zshenv &> /dev/null
-                cp -p $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
+                #cp -p $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
         else
                 ln -s $ZDOTDIR/.zshenv $HOME/.zshenv &> /dev/null
                 #ln -s $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null

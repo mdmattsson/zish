@@ -101,6 +101,20 @@ function clean_zdotdir()
         doprint "$fg[green]Done.$fg[default]\n"
 }
 
+function install_zish()
+{
+        doprint  "$fg[cyan]INSTALLER:$fg[default] getting zish files..."
+        pushd $HOME/.config
+        git clone --recurse-submodules ${REPO_SOURCE} ${ZDOTDIR} &> /dev/null
+        #source $ZDOTDIR/.zshrc
+        popd
+        if [[ -d ${ZDOTDIR} ]]; then
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
+
+}
 
 function setup_zdotdir_stuff()
 {
@@ -312,6 +326,7 @@ set_terminal_title "ZISH Installer"
 show_header
 #maintenance stuff
 clean_zdotdir
+install_zish
 setup_zdotdir_stuff
 setup_cache
 #apps & scripts 

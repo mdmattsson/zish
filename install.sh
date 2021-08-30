@@ -14,7 +14,7 @@ REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
 export PATH="/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin:${PATH}"
 export ZDOTDIR=$HOME/.config/zish
-USER_PLUGIN_DIR=$ZDOTDIR/plugins
+ZISH_PLUGIN_DIR=$ZDOTDIR/plugins
 
 FORCE_ZSH_INSTALL=false
 
@@ -152,7 +152,7 @@ function get_plugin()
         local PLUGIN_NAME=$1
         local PLUGIN_REPO=$2
         local PLUGIN_URL=$3
-        local PLUGIN_DIR=${USER_PLUGIN_DIR}/${PLUGIN_NAME}
+        local PLUGIN_DIR=${ZISH_PLUGIN_DIR}/${PLUGIN_NAME}
         mkdir -p ${PLUGIN_DIR}
         pushd ${PLUGIN_DIR}
         git init &> /dev/null
@@ -165,7 +165,7 @@ function get_plugin()
 
 function install_plugins()
 {
-        [[ ! -d ${USER_PLUGIN_DIR} ]] && mkdir -p ${USER_PLUGIN_DIR} &> /dev/null
+        [[ ! -d ${ZISH_PLUGIN_DIR} ]] && mkdir -p ${ZISH_PLUGIN_DIR} &> /dev/null
 
         echo "#" >> ${ZDOTDIR}/.zshrc
         echo "# ZSH PLUGINS" >> ${ZDOTDIR}/.zshrc
@@ -240,13 +240,13 @@ function add_plugin_autojump()
         {
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
-        git clone --depth=1 https://github.com/wting/autojump.git ${USER_PLUGIN_DIR}/autojump &> /dev/null
-        if [[ -f ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh ]]; then
-                sed -i "" "s|~/.autojump/|"${USER_PLUGIN_DIR}"/autojump|" ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh
-                sed -i "" "s|~/.autojump/|~/.cache/autojump/|" ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh
+        git clone --depth=1 https://github.com/wting/autojump.git ${ZISH_PLUGIN_DIR}/autojump &> /dev/null
+        if [[ -f ${ZISH_PLUGIN_DIR}/autojump/bin/autojump.zsh ]]; then
+                sed -i "" "s|~/.autojump/|"${ZISH_PLUGIN_DIR}"/autojump|" ${ZISH_PLUGIN_DIR}/autojump/bin/autojump.zsh
+                sed -i "" "s|~/.autojump/|~/.cache/autojump/|" ${ZISH_PLUGIN_DIR}/autojump/bin/autojump.zsh
                 echo "# Load autojump." >> ${ZDOTDIR}/.zshrc
-                echo "source ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh" >> ${ZDOTDIR}/.zshrc
-                USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/autojump/bin
+                echo "source ${ZISH_PLUGIN_DIR}/autojump/bin/autojump.zsh" >> ${ZDOTDIR}/.zshrc
+                USER_PATH=$USER_PATH:${ZISH_PLUGIN_DIR}/autojump/bin
                 doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"
@@ -258,11 +258,11 @@ function add_plugin_autojump()
 function add_plugin_highlighting()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-syntax-highlighting..."
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${USER_PLUGIN_DIR}/zsh-syntax-highlighting &> /dev/null
-        if [[ -f ${USER_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZISH_PLUGIN_DIR}/zsh-syntax-highlighting &> /dev/null
+        if [[ -f ${ZISH_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
                 echo "# Load zsh-syntax-highlighting." >> ${ZDOTDIR}/.zshrc
-                echo "source ${USER_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR}/.zshrc
-                USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/zsh-syntax-highlighting
+                echo "source ${ZISH_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR}/.zshrc
+                USER_PATH=$USER_PATH:${ZISH_PLUGIN_DIR}/zsh-syntax-highlighting
                 doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"
@@ -272,11 +272,11 @@ function add_plugin_highlighting()
 function add_plugin_autosuggest()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-autosuggestions..."
-        git clone https://github.com/zsh-users/zsh-autosuggestions.git ${USER_PLUGIN_DIR}/zsh-autosuggestions &> /dev/null
-        if [[ -f ${USER_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+        git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZISH_PLUGIN_DIR}/zsh-autosuggestions &> /dev/null
+        if [[ -f ${ZISH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
                 echo "# Load zsh-autosuggestions." >> ${ZDOTDIR}/.zshrc
-                echo "source ${USER_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${ZDOTDIR}/.zshrc
-                USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/zsh-autosuggestions
+                echo "source ${ZISH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${ZDOTDIR}/.zshrc
+                USER_PATH=$USER_PATH:${ZISH_PLUGIN_DIR}/zsh-autosuggestions
                 doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"
@@ -287,10 +287,10 @@ function add_plugin_sudo()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
-        mkdir -p ${USER_PLUGIN_DIR}/sudo && pushd ${USER_PLUGIN_DIR}/sudo && curl -O $SUDO_URL &> /dev/null && popd
-        if [[ -f ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh ]]; then
+        mkdir -p ${ZISH_PLUGIN_DIR}/sudo && pushd ${ZISH_PLUGIN_DIR}/sudo && curl -O $SUDO_URL &> /dev/null && popd
+        if [[ -f ${ZISH_PLUGIN_DIR}/sudo/sudo.plugin.zsh ]]; then
                 echo "# Load sudo" >> ${ZDOTDIR}/.zshrc
-                echo "source ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> ${ZDOTDIR}/.zshrc
+                echo "source ${ZISH_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> ${ZDOTDIR}/.zshrc
                 doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"
@@ -300,10 +300,10 @@ function add_plugin_sudo()
 function add_plugin_powerlevel10k()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k &> /dev/null
-        if [[ -f ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme ]]; then
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZISH_PLUGIN_DIR}/powerlevel10k &> /dev/null
+        if [[ -f ${ZISH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
-                #echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
+                #echo "source ${ZISH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
                 echo "# To customize prompt, run 'p10k configure' or edit ~/.config/zish/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
                 #echo "[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
                 doprint "$fg[green]Done.$fg[default]\n"

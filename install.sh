@@ -235,7 +235,7 @@ function add_plugin_antigen()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin antigen..."
         local ANTIGEN_URL=git.io/antigen-nightly
-        mkdir -p $ZISH_PLUGIN_DIR/antigen && pushd $ZISH_PLUGIN_DIR/antigen && curl -O $ANTIEN_URL > antigen.zsh &> /dev/null && popd
+        mkdir -p $ZISH_PLUGIN_DIR/antigen && pushd $ZISH_PLUGIN_DIR/antigen && curl -O $ANTIGEN_URL > antigen.zsh &> /dev/null && popd
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/antigen/antigen.zsh ]]; then
                 echo "# Load antigen." >> $ZDOTDIR/.zshrc

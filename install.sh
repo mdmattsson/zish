@@ -13,7 +13,7 @@
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
-export PATH="/opt/homebrew/bin:/usr/local/bin"
+export PATH="/bin:/usr/local/bin:/opt/homebrew/bin"
 export ZDOTDIR=$HOME/.config/zish/zsh
 USER_SHELL_DIR=$HOME/.config/zish
 USER_ZSH_DIR=$USER_SHELL_DIR/zsh
@@ -275,13 +275,13 @@ function add_plugin_powerlevel10k()
         echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
         echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
         echo "# To customize prompt, run `p10k configure` or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
-        echo "[[ ! -f $$ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
+        echo "[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
         doprint "$fg[green]Done.$fg[default]\n"
 }
 
 function add_userpath_to_zshenv()
 {
-        echo "export PATH=$USER_PATH:$PATH" >> ${ZDOTDIR}/.zshenv
+        echo "export PATH=$USER_PATH" >> $ZDOTDIR/.zshenv
 }
 
 show_header

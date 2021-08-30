@@ -15,7 +15,6 @@ REPO_SOURCE=https://github.com/mdmattsson/zish.git
 export PATH="/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin:${PATH}"
 export ZDOTDIR=$HOME/.config/zish
 ZISH_PLUGIN_DIR=$ZDOTDIR/plugins
-
 FORCE_ZSH_INSTALL=false
 
 windows() { [[ -n "$WINDIR" ]]; }
@@ -105,15 +104,14 @@ function install_zish()
 {
         doprint  "$fg[cyan]INSTALLER:$fg[default] getting zish files..."
         pushd $HOME/.config
-        git clone --recurse-submodules ${REPO_SOURCE} ${ZDOTDIR} &> /dev/null
-        #source $ZDOTDIR/.zshrc
+        git clone --recurse-submodules ${REPO_SOURCE} &> /dev/null
         popd
-        if [[ -d ${ZDOTDIR} ]]; then
+        if [[ -d $ZDOTDIR ]]; then
                 doprint "$fg[green]Done.$fg[default]\n"
+                #source $ZDOTDIR/.zshrc
         else
                 doprint "$fg[red]Error.$fg[default]\n"
         fi
-
 }
 
 function setup_zdotdir_stuff()

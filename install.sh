@@ -11,7 +11,7 @@
 
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
-ZISH_LOG="$PWD/zish.log" # &> /dev/null
+ZISH_LOG=$PWD/zish.log # &> /dev/null
 [[ -f $ZISH_LOG ]] && rm $ZISH_LOG
 ZDOTDIR=$HOME/.config/zish
 ZISH_PLUGIN_DIR=$ZDOTDIR/plugins
@@ -89,14 +89,14 @@ function show_header()
 function clean_zdotdir()
 {
         doprint  "$fg[cyan]INSTALLER:$fg[default] removing old shell files..."
-        [[ ! -d $HOME/.config ]] && mkdir .config >>$ZISH_LOG
-        [[ -d $ZDOTDIR ]] && rm -rf $ZDOTDIR >>$ZISH_LOG
-        [[ ! -d $ZDOTDIR ]] && mkdir -p $ZDOTDIR  >>$ZISH_LOG
+        [[ ! -d $HOME/.config ]] && mkdir .config &> /dev/null
+        [[ -d $ZDOTDIR ]] && rm -rf $ZDOTDIR &> /dev/null
+        [[ ! -d $ZDOTDIR ]] && mkdir -p $ZDOTDIR  &> /dev/null
         #rename/backup existing zshrc
-        [[ -L $HOME/.zshrc ]] && rm $HOME/.zshrc >>$ZISH_LOG
+        [[ -L $HOME/.zshrc ]] && rm $HOME/.zshrc &> /dev/null
         [[ -f $HOME/.zshrc && ! -L $HOME/.zshrc  ]] && mv $HOME/.zshrc ~/.zshrc_old && rm -f $HOME/.zshrc
         #remove old history file
-        [[ -L $HOME/.zsh_history ]] && rm $HOME/.zsh_history >>$ZISH_LOG
+        [[ -L $HOME/.zsh_history ]] && rm $HOME/.zsh_history &> /dev/null
         [[ -f $HOME/.zsh_history && ! -L $HOME/.zsh_history  ]] && mv $HOME/.zsh_history ~/.zsh_history_old && rm -f $HOME/.zsh_history
 
         doprint "$fg[green]Done.$fg[default]\n"
@@ -106,7 +106,7 @@ function install_zish()
 {
         doprint  "$fg[cyan]INSTALLER:$fg[default] getting zish files..."
         pushd $HOME/.config
-        git clone --recurse-submodules $REPO_SOURCE >>$ZISH_LOG
+        git clone --recurse-submodules $REPO_SOURCE &> /dev/null
         popd
         if [[ -d $ZDOTDIR ]]; then
                 doprint "$fg[green]Done.$fg[default]\n"
@@ -119,28 +119,28 @@ function install_zish()
 function setup_zdotdir_stuff()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] removing old zprofile..."
-        [[ -L $HOME/.zshenv ]] && rm $HOME/.zshenv >>$ZISH_LOG
-        [[ -f $HOME/.zshenv ]] && mv $HOME/.zshenv $HOME/.zshenv_old >>$ZISH_LOG
+        [[ -L $HOME/.zshenv ]] && rm $HOME/.zshenv &> /dev/null
+        [[ -f $HOME/.zshenv ]] && mv $HOME/.zshenv $HOME/.zshenv_old &> /dev/null
 
-        [[ -L $HOME/.zprofile ]] && rm $HOME/.zprofile >>$ZISH_LOG
-        [[ -f $HOME/.zprofile ]] && mv $HOME/.zprofile $HOME/.zprofile_old >>$ZISH_LOG
+        [[ -L $HOME/.zprofile ]] && rm $HOME/.zprofile &> /dev/null
+        [[ -f $HOME/.zprofile ]] && mv $HOME/.zprofile $HOME/.zprofile_old &> /dev/null
         doprint "$fg[green]Done.$fg[default]\n"
 
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] creating new zprofile link..."
         if windows; then
-                cp -p $ZDOTDIR/.zshenv $HOME/.zshenv >>$ZISH_LOG
-                #cp -p $ZDOTDIR/.zprofile $HOME/.zprofile >>$ZISH_LOG
+                cp -p $ZDOTDIR/.zshenv $HOME/.zshenv &> /dev/null
+                #cp -p $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
         else
-                ln -s $ZDOTDIR/.zshenv $HOME/.zshenv >>$ZISH_LOG
-                #ln -s $ZDOTDIR/.zprofile $HOME/.zprofile >>$ZISH_LOG
+                ln -s $ZDOTDIR/.zshenv $HOME/.zshenv &> /dev/null
+                #ln -s $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
         fi
         doprint "$fg[green]Done.$fg[default]\n"
 }
 
 function setup_cache()
 {
-        [[ ! -d $HOME/.cache ]] && mkdir -p $HOME/.cache >>$ZISH_LOG
-        [[ ! -f $HOME/.cache/.zsh_history ]] && touch $HOME/.cache/.zsh_history >>$ZISH_LOG
+        [[ ! -d $HOME/.cache ]] && mkdir -p $HOME/.cache &> /dev/null
+        [[ ! -f $HOME/.cache/.zsh_history ]] && touch $HOME/.cache/.zsh_history &> /dev/null
 }
 
 #
@@ -155,17 +155,17 @@ function get_plugin()
         local PLUGIN_DIR=$ZISH_PLUGIN_DIR/$PLUGIN_NAME
         mkdir -p $PLUGIN_DIR
         pushd $PLUGIN_DIR
-        git init >>$ZISH_LOG
-        git config core.sparsecheckout true >>$ZISH_LOG
+        git init &> /dev/null
+        git config core.sparsecheckout true &> /dev/null
         echo $PLUGIN_URL >> .git/info/sparse-checkout
-        git remote add -f origin $PLUGIN_REPO >>$ZISH_LOG
-        git pull origin master >>$ZISH_LOG
+        git remote add -f origin $PLUGIN_REPO &> /dev/null
+        git pull origin master &> /dev/null
         popd 
 }
 
 function install_plugins()
 {
-        [[ ! -d $ZISH_PLUGIN_DIR ]] && mkdir -p $ZISH_PLUGIN_DIR >>$ZISH_LOG
+        [[ ! -d $ZISH_PLUGIN_DIR ]] && mkdir -p $ZISH_PLUGIN_DIR &> /dev/null
 
         echo "#" >> $ZDOTDIR/.zshrc
         echo "# ZSH PLUGINS" >> $ZDOTDIR/.zshrc
@@ -182,26 +182,26 @@ function install_macos_apps()
                 defaults write NSGlobalDomain KeyRepeat -int 0
                 alias thebrew='arch -x86_64 /usr/local/bin/brew'
                 [[ $OPSYS_SILICON=="ARM" ]] && alias thebrew='arch -arm64e /opt/homebrew/bin/brew'  
-                thebrew install cask >>$ZISH_LOG
-                thebrew install --cask wget >>$ZISH_LOG
-                thebrew install --cask tree >>$ZISH_LOG
-                thebrew install --cask broot >>$ZISH_LOG
-                thebrew install --cask lf >>$ZISH_LOG
-                thebrew install --cask htop >>$ZISH_LOG
-                thebrew install --cask archey >>$ZISH_LOG
-                thebrew install --cask wifi-password >>$ZISH_LOG
-                thebrew install --cask nvm >>$ZISH_LOG
+                thebrew install cask &> /dev/null
+                thebrew install --cask wget &> /dev/null
+                thebrew install --cask tree &> /dev/null
+                thebrew install --cask broot &> /dev/null
+                thebrew install --cask lf &> /dev/null
+                thebrew install --cask htop &> /dev/null
+                thebrew install --cask archey &> /dev/null
+                thebrew install --cask wifi-password &> /dev/null
+                thebrew install --cask nvm &> /dev/null
         fi
 }
 
 function install_fonts()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm fonts..."
-        git clone https://github.com/powerline/fonts.git $ZDOTDIR/fonts >>$ZISH_LOG
+        git clone --depth=1 https://github.com/powerline/fonts.git $ZDOTDIR/fonts &> /dev/null
         sleep 3
         if [[ -f $ZDOTDIR/fonts/install.sh ]]; then
                 pushd $ZDOTDIR/fonts
-                ./install.sh >>$ZISH_LOG
+                ./install.sh &> /dev/null
                 popd
                 doprint "$fg[green]Done.$fg[default]\n"
         else
@@ -213,12 +213,12 @@ function install_fonts()
 function clean_previnstall_color_schemes()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm color schemes..."
-        git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git $ZDOTDIR/color-schemes >>$ZISH_LOG
+        git clone --depth=1 https://github.com/mbadolato/iTerm2-Color-Schemes.git $ZDOTDIR/color-schemes &> /dev/null
         sleep 3
         if [[ -f $ZDOTDIR/color-schemes/tools/import-scheme.sh ]]; then
                 #[[ ! -d $ZDOTDIR/color-schemes ]] && mkdir -p $ZDOTDIR/color-schemes
                 #cp -R zsh/color-schemes/* $ZDOTDIR/color-schemes/
-                $ZDOTDIR/color-schemes/tools/import-scheme.sh $ZDOTDIR/color-schemes/schemes/* >>$ZISH_LOG
+                $ZDOTDIR/color-schemes/tools/import-scheme.sh $ZDOTDIR/color-schemes/schemes/* &> /dev/null
                 # Import all color schemes (verbose mode)
                 #scripts/import-scheme.sh -v $ZDOTDIR/color-schemes/*
                 # Import specific color schemes (quotations are needed for schemes with spaces in name)
@@ -235,7 +235,7 @@ function add_plugin_autojump()
         {
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
-        git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR/autojump >>$ZISH_LOG
+        git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR/autojump &> /dev/null
         sleep 3
         if [[ -f $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh ]]; then
                 sed -i "" "s|~/.autojump/|"$ZISH_PLUGIN_DIR"/autojump|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh
@@ -254,7 +254,7 @@ function add_plugin_autojump()
 function add_plugin_highlighting()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-syntax-highlighting..."
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZISH_PLUGIN_DIR/zsh-syntax-highlighting >>$ZISH_LOG
+        git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZISH_PLUGIN_DIR/zsh-syntax-highlighting &> /dev/null
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
                 echo "# Load zsh-syntax-highlighting." >> $ZDOTDIR/.zshrc
@@ -269,7 +269,7 @@ function add_plugin_highlighting()
 function add_plugin_autosuggest()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-autosuggestions..."
-        git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZISH_PLUGIN_DIR/zsh-autosuggestions >>$ZISH_LOG
+        git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git $ZISH_PLUGIN_DIR/zsh-autosuggestions &> /dev/null
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
                 echo "# Load zsh-autosuggestions." >> $ZDOTDIR/.zshrc
@@ -285,7 +285,7 @@ function add_plugin_sudo()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
-        mkdir -p $ZISH_PLUGIN_DIR/sudo && pushd $ZISH_PLUGIN_DIR/sudo && curl -O $SUDO_URL >>$ZISH_LOG && popd
+        mkdir -p $ZISH_PLUGIN_DIR/sudo && pushd $ZISH_PLUGIN_DIR/sudo && curl -O $SUDO_URL &> /dev/null && popd
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/sudo/sudo.plugin.zsh ]]; then
                 echo "# Load sudo" >> $ZDOTDIR/.zshrc
@@ -296,10 +296,26 @@ function add_plugin_sudo()
         fi
 }
 
+function add_plugin_autosuggest()
+{
+        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin antigen..."
+        git clone --depth=1 https://github.com/zsh-users/antigen.git $ZISH_PLUGIN_DIR/antigen &> /dev/null
+        sleep 2
+        if [[ -f $ZISH_PLUGIN_DIR/antigen/antigen.zsh ]]; then
+                echo "# Load antigen." >> $ZDOTDIR/.zshrc
+                echo "source $ZISH_PLUGIN_DIR/antigen/zantigen.zsh" >> $ZDOTDIR/.zshrc
+                USER_PATH=$USER_PATH:$ZISH_PLUGIN_DIR/antigen
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
+}
+
+
 function add_plugin_powerlevel10k()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZISH_PLUGIN_DIR/powerlevel10k >>$ZISH_LOG
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZISH_PLUGIN_DIR/powerlevel10k &> /dev/null
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> $ZDOTDIR/.zshrc

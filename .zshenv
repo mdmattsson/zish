@@ -1,4 +1,6 @@
 # Defines environment variables.
+export PATH="/usr/bin:/usr/local/bin:/bin"
+
 export ZDOTDIR=$HOME/.config/zish
 export REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 export REPO_SOURCE=https://github.com/mdmattsson/zish.git

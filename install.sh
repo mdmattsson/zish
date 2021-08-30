@@ -12,10 +12,11 @@
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
-export PATH="/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
-export ZDOTDIR=$HOME/.config/zish
+ZDOTDIR=$HOME/.config/zish
 ZISH_PLUGIN_DIR=$ZDOTDIR/plugins
 FORCE_ZSH_INSTALL=false
+
+USER_PATH=$ZDOTDIR
 
 windows() { [[ -n "$WINDIR" ]]; }
 OPSYS="UNKNOWN"
@@ -173,21 +174,23 @@ function install_plugins()
 #MACOS Specific
 function install_macos_apps()
 {
-if [[ $OPSYS=="MACOS" ]]; then
-  #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  defaults write NSGlobalDomain KeyRepeat -int 0
-  alias thebrew='arch -x86_64 /usr/local/bin/brew'
-  [[ $OPSYS_SILICON=="ARM" ]] && alias thebrew='arch -arm64e /opt/homebrew/bin/brew'  
-  thebrew install cask &> /dev/null
-  thebrew install --cask wget &> /dev/null
-  thebrew install --cask tree &> /dev/null
-  thebrew install --cask broot &> /dev/null
-  thebrew install --cask lf &> /dev/null
-  thebrew install --cask htop &> /dev/null
-  thebrew install --cask archey &> /dev/null
-  thebrew install --cask wifi-password &> /dev/null
-  thebrew install --cask nvm &> /dev/null
-fi
+        if [[ $OPSYS=="MACOS" ]]; then
+                #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                USER_PATH="/opt/homebrew/bin:$USER_PATH"
+
+                defaults write NSGlobalDomain KeyRepeat -int 0
+                alias thebrew='arch -x86_64 /usr/local/bin/brew'
+                [[ $OPSYS_SILICON=="ARM" ]] && alias thebrew='arch -arm64e /opt/homebrew/bin/brew'  
+                thebrew install cask &> /dev/null
+                thebrew install --cask wget &> /dev/null
+                thebrew install --cask tree &> /dev/null
+                thebrew install --cask broot &> /dev/null
+                thebrew install --cask lf &> /dev/null
+                thebrew install --cask htop &> /dev/null
+                thebrew install --cask archey &> /dev/null
+                thebrew install --cask wifi-password &> /dev/null
+                thebrew install --cask nvm &> /dev/null
+        fi
 }
 
 #install fonts

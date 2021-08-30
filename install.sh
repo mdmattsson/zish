@@ -221,7 +221,6 @@ function clean_previnstall_color_schemes()
                 #scripts/import-scheme.sh 'SpaceGray Eighties'                     # by scheme name
                 #scripts/import-scheme.sh Molokai 'SpaceGray Eighties'             # import multiple
                 doprint "$fg[green]Done.$fg[default]\n"
-                doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"
         fi
@@ -298,7 +297,7 @@ function add_plugin_sudo()
 function add_plugin_powerlevel10k()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k >> ${ZDOTDIR}/.zshrc
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k &> /dev/null
         if [[ -f ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
                 #echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc

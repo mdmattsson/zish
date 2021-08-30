@@ -97,6 +97,10 @@ function clean_zdotdir()
         #rename/backup existing zshrc
         [[ -L ${HOME}/.zshrc ]] && rm ${HOME}/.zshrc &> /dev/null
         [[ -f ${HOME}/.zshrc && ! -L ${HOME}/.zshrc  ]] && mv ${HOME}/.zshrc ~/.zshrc_old && rm -f ${HOME}/.zshrc
+        #remove old history file
+        [[ -L ${HOME}/.zsh_history ]] && rm ${HOME}/.zsh_history &> /dev/null
+        [[ -f ${HOME}/.zsh_history && ! -L ${HOME}/.zsh_history  ]] && mv ${HOME}/.zsh_history ~/.zsh_history_old && rm -f ${HOME}/.zsh_history
+
         #if this is coming from a cloned repo, install from clone
         if [[ -d ${PWD}/zsh && ${PWD} != ${HOME}/.config ]]; then
                 REPO_SOURCE="${PWD}/zsh"

@@ -12,7 +12,7 @@
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
-export PATH="/bin:/usr/local/bin:/opt/homebrew/bin"
+export PATH="/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin:${PATH}"
 export ZDOTDIR=$HOME/.config/zish/zsh
 USER_SHELL_DIR=$HOME/.config/zish
 USER_ZSH_DIR=$USER_SHELL_DIR/zsh
@@ -194,10 +194,14 @@ function install_fonts()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm fonts..."
         git clone https://github.com/powerline/fonts.git ${ZDOTDIR}/fonts &> /dev/null
-        pushd ${ZDOTDIR}/fonts
-        ./install.sh &> /dev/null
-        popd
-        doprint "$fg[green]Done.$fg[default]\n"
+        if [[ -f ${ZDOTDIR}/fonts/install.sh ]]; then
+                pushd ${ZDOTDIR}/fonts
+                ./install.sh &> /dev/null
+                popd
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 # Import all color schemes
@@ -205,16 +209,22 @@ function clean_previnstall_color_schemes()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm color schemes..."
         git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git ${ZDOTDIR}/color-schemes &> /dev/null
-        #[[ ! -d ${ZDOTDIR}/color-schemes ]] && mkdir -p ${ZDOTDIR}/color-schemes
-        #cp -R zsh/color-schemes/* ${ZDOTDIR}/color-schemes/
-        ${ZDOTDIR}/color-schemes/tools/import-scheme.sh ${ZDOTDIR}/color-schemes/schemes/* &> /dev/null
-        # Import all color schemes (verbose mode)
-        #scripts/import-scheme.sh -v ${ZDOTDIR}/color-schemes/*
-        # Import specific color schemes (quotations are needed for schemes with spaces in name)
-        #scripts/import-scheme.sh '${ZDOTDIR}/color-schemes/SpaceGray Eighties.itermcolors' # by file path
-        #scripts/import-scheme.sh 'SpaceGray Eighties'                     # by scheme name
-        #scripts/import-scheme.sh Molokai 'SpaceGray Eighties'             # import multiple
-        doprint "$fg[green]Done.$fg[default]\n"
+
+        if [[ -f ${ZDOTDIR}/color-schemes/tools/import-scheme.sh ]]; then
+                #[[ ! -d ${ZDOTDIR}/color-schemes ]] && mkdir -p ${ZDOTDIR}/color-schemes
+                #cp -R zsh/color-schemes/* ${ZDOTDIR}/color-schemes/
+                ${ZDOTDIR}/color-schemes/tools/import-scheme.sh ${ZDOTDIR}/color-schemes/schemes/* &> /dev/null
+                # Import all color schemes (verbose mode)
+                #scripts/import-scheme.sh -v ${ZDOTDIR}/color-schemes/*
+                # Import specific color schemes (quotations are needed for schemes with spaces in name)
+                #scripts/import-scheme.sh '${ZDOTDIR}/color-schemes/SpaceGray Eighties.itermcolors' # by file path
+                #scripts/import-scheme.sh 'SpaceGray Eighties'                     # by scheme name
+                #scripts/import-scheme.sh Molokai 'SpaceGray Eighties'             # import multiple
+                doprint "$fg[green]Done.$fg[default]\n"
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 function it2prof()
@@ -228,14 +238,18 @@ function add_plugin_autojump()
         {
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
-        echo "#" >> ${ZDOTDIR}/.zshrc
         git clone --depth=1 https://github.com/wting/autojump.git ${USER_PLUGIN_DIR}/autojump &> /dev/null
-        sed -i "" "s|~/.autojump/|"${USER_PLUGIN_DIR}"/autojump|" ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh
-        sed -i "" "s|~/.autojump/|~/.cache/autojump/|" ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh
-        echo "# Load autojump." >> ${ZDOTDIR}/.zshrc
-        echo "source ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh" >> ${ZDOTDIR}/.zshrc
-        USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/autojump/bin
-        doprint "$fg[green]Done.$fg[default]\n"
+        if [[ -f ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh ]]; then
+                sed -i "" "s|~/.autojump/|"${USER_PLUGIN_DIR}"/autojump|" ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh
+                sed -i "" "s|~/.autojump/|~/.cache/autojump/|" ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh
+                echo "# Load autojump." >> ${ZDOTDIR}/.zshrc
+                echo "source ${USER_PLUGIN_DIR}/autojump/bin/autojump.zsh" >> ${ZDOTDIR}/.zshrc
+                USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/autojump/bin
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
+
 }
 
 
@@ -243,30 +257,35 @@ function add_plugin_highlighting()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-syntax-highlighting..."
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${USER_PLUGIN_DIR}/zsh-syntax-highlighting &> /dev/null
-        echo "# Load zsh-syntax-highlighting." >> ${ZDOTDIR}/.zshrc
-        echo "source ${USER_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR}/.zshrc
-        USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/zsh-syntax-highlighting
-        doprint "$fg[green]Done.$fg[default]\n"
+        if [[ -f ${USER_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+                echo "# Load zsh-syntax-highlighting." >> ${ZDOTDIR}/.zshrc
+                echo "source ${USER_PLUGIN_DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR}/.zshrc
+                USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/zsh-syntax-highlighting
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 function add_plugin_autosuggest()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-autosuggestions..."
         git clone https://github.com/zsh-users/zsh-autosuggestions.git ${USER_PLUGIN_DIR}/zsh-autosuggestions &> /dev/null
-        echo "# Load zsh-autosuggestions." >> ${ZDOTDIR}/.zshrc
-        echo "source ${USER_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${ZDOTDIR}/.zshrc
-        USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/zsh-autosuggestions
-        doprint "$fg[green]Done.$fg[default]\n"
+        if [[ -f ${USER_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+                echo "# Load zsh-autosuggestions." >> ${ZDOTDIR}/.zshrc
+                echo "source ${USER_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${ZDOTDIR}/.zshrc
+                USER_PATH=$USER_PATH:${USER_PLUGIN_DIR}/zsh-autosuggestions
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 function add_plugin_sudo()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
-        mkdir -p ${USER_PLUGIN_DIR}/sudo
-        pushd ${USER_PLUGIN_DIR}/sudo
-        curl -O $SUDO_URL &> /dev/null
-        popd
+        mkdir -p ${USER_PLUGIN_DIR}/sudo && pushd ${USER_PLUGIN_DIR}/sudo && curl -O $SUDO_URL &> /dev/null && popd
         if [[ -f ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh ]]; then
                 echo "# Load sudo" >> ${ZDOTDIR}/.zshrc
                 echo "source ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> ${ZDOTDIR}/.zshrc
@@ -278,18 +297,22 @@ function add_plugin_sudo()
 
 function add_plugin_powerlevel10k()
 {
-        #git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
-        echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
-        echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
-        echo "# To customize prompt, run `p10k configure` or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
-        echo "[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
-        doprint "$fg[green]Done.$fg[default]\n"
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${USER_PLUGIN_DIR}/powerlevel10k
+        if [[ -f powerlevel10k/powerlevel10k.zsh-theme ]]; then
+                echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
+                #echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
+                echo "# To customize prompt, run `p10k configure` or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
+                #echo "[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 function add_userpath_to_zshenv()
 {
-        echo "export PATH=$USER_PATH" >> $ZDOTDIR/.zshenv
+        echo "export PATH=${PATH}:${USER_PATH}" >> $ZDOTDIR/.zshenv
 }
 
 DISABLE_AUTO_TITLE="true"

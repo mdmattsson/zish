@@ -282,6 +282,7 @@ function add_userpath_to_zshenv()
         echo "export PATH=$USER_PATH" >> $ZDOTDIR/.zshenv
 }
 
+
 show_header
 #maintenance stuff
 clean_zdotdir
@@ -294,10 +295,10 @@ install_fonts
 clean_previnstall_color_schemes
 #it2prof "Default"
 add_plugin_autojump
-add_plugin_powerlevel10k
 add_plugin_highlighting
 add_plugin_autosuggest
 add_plugin_sudo
+add_plugin_powerlevel10k
 #final zsh settings...
 add_userpath_to_zshenv
 

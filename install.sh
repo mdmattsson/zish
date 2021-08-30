@@ -128,7 +128,7 @@ function setup_zdotdir_stuff()
                 cp -p $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
         else
                 ln -s $ZDOTDIR/.zshenv $HOME/.zshenv &> /dev/null
-                ln -s $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
+                #ln -s $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
         fi
         doprint "$fg[green]Done.$fg[default]\n"
 }

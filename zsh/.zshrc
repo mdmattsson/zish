@@ -16,13 +16,9 @@ fi
 autoload -U colors && colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
-
 #zstyle ':completion:*' list-colors 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-    
-
 # history
 source $ZDOTDIR/scripts/history.zsh; 
-
 
 # LF
 # Use lf to switch directories and bind it to ctrl-o
@@ -36,17 +32,11 @@ lfcd () {
     fi
 }
 
-
-
-# oh-my-zsh seems to enable this by default, not desired for 
-# workflow of controlling terminal title.
 #echo -n -e "\033]0;ZISH\007"
 DISABLE_AUTO_TITLE="true"
 function set_terminal_title() {
   echo -en "\e]2;$@\a"
 }
-
-set_terminal_title "ZISH"
 
 function config_prompt() {
   p10k configure
@@ -70,8 +60,5 @@ source $ZDOTDIR/scripts/completion.zsh;
 [[ -f $ZDOTDIR/shortcutrc ]] && source $/shortcutrc
 for f in $ZDOTDIR/aliases/*; do source $f; done
 
-
 ## this loads NVM
 [[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh
-
-

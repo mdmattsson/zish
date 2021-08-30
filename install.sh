@@ -9,7 +9,6 @@
 # to install, simply copy the commandline below. run this installer
 # zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh)
 
-
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
@@ -264,10 +263,17 @@ function add_plugin_sudo()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
-        mkdir ${USER_PLUGIN_DIR}/sudo && pushd ${USER_PLUGIN_DIR}/sudo && { curl -O $SUDO_URL &> /dev/null; popd; }
-        echo "# Load sudo" >> ${ZDOTDIR}/.zshrc
-        echo "source ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> ${ZDOTDIR}/.zshrc
-        doprint "$fg[green]Done.$fg[default]\n"
+        mkdir -p ${USER_PLUGIN_DIR}/sudo
+        pushd ${USER_PLUGIN_DIR}/sudo
+        curl -O $SUDO_URL &> /dev/null
+        popd
+        if [[ -f ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh ]]; then
+                echo "# Load sudo" >> ${ZDOTDIR}/.zshrc
+                echo "source ${USER_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> ${ZDOTDIR}/.zshrc
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 function add_plugin_powerlevel10k()
@@ -286,7 +292,12 @@ function add_userpath_to_zshenv()
         echo "export PATH=$USER_PATH" >> $ZDOTDIR/.zshenv
 }
 
+DISABLE_AUTO_TITLE="true"
+function set_terminal_title() {
+  echo -en "\e]2;$@\a"
+}
 
+set_terminal_title "ZISH Installer"
 show_header
 #maintenance stuff
 clean_zdotdir

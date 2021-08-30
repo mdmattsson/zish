@@ -231,6 +231,22 @@ function clean_previnstall_color_schemes()
         fi
 }
 
+function add_plugin_antigen()
+{
+        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin antigen..."
+        local ANTIGEN_URL=git.io/antigen-nightly
+        mkdir -p $ZISH_PLUGIN_DIR/antigen && pushd $ZISH_PLUGIN_DIR/antigen && curl -O $ANTIEN_URL > antigen.zsh &> /dev/null && popd
+        sleep 2
+        if [[ -f $ZISH_PLUGIN_DIR/antigen/antigen.zsh ]]; then
+                echo "# Load antigen." >> $ZDOTDIR/.zshrc
+                echo "source $ZISH_PLUGIN_DIR/antigen/antigen.zsh" >> $ZDOTDIR/.zshrc
+                USER_PATH=$USER_PATH:$ZISH_PLUGIN_DIR/antigen
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
+}
+
 function add_plugin_autojump()
         {
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
@@ -296,22 +312,6 @@ function add_plugin_sudo()
         fi
 }
 
-function add_plugin_autosuggest()
-{
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin antigen..."
-        git clone --depth=1 https://github.com/zsh-users/antigen.git $ZISH_PLUGIN_DIR/antigen &> /dev/null
-        sleep 2
-        if [[ -f $ZISH_PLUGIN_DIR/antigen/antigen.zsh ]]; then
-                echo "# Load antigen." >> $ZDOTDIR/.zshrc
-                echo "source $ZISH_PLUGIN_DIR/antigen/zantigen.zsh" >> $ZDOTDIR/.zshrc
-                USER_PATH=$USER_PATH:$ZISH_PLUGIN_DIR/antigen
-                doprint "$fg[green]Done.$fg[default]\n"
-        else
-                doprint "$fg[red]Error.$fg[default]\n"
-        fi
-}
-
-
 function add_plugin_powerlevel10k()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
@@ -357,6 +357,7 @@ install_macos_apps
 install_fonts
 clean_previnstall_color_schemes
 #it2prof "Default"
+add_plugin_antigen
 add_plugin_autojump
 add_plugin_highlighting
 add_plugin_autosuggest

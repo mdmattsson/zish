@@ -301,7 +301,7 @@ function add_plugin_powerlevel10k()
         if [[ -f ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
                 #echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
-                echo "# To customize prompt, run `p10k configure` or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
+                echo "# To customize prompt, run 'p10k configure' or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
                 #echo "[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
                 doprint "$fg[green]Done.$fg[default]\n"
         else

@@ -3,8 +3,8 @@
 #
 
 # create symbolic links in $HOME
-# ln -s ~/.config/zsh/zprofile ~/.zprofile
-# ln -s ~/.config/zsh/zshrc ~/.zshrc
+# ln -s ~/.config/zish/zprofile ~/.zprofile
+# ln -s ~/.config/zish/zshrc ~/.zshrc
 
 #set laptop hostname
 #scutil --set HostName "dasher.batlogic"

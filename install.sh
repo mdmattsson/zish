@@ -13,10 +13,8 @@ REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
 export PATH="/bin:/usr/bin:/usr/local/bin:/opt/homebrew/bin:${PATH}"
-export ZDOTDIR=$HOME/.config/zish/zsh
-USER_SHELL_DIR=$HOME/.config/zish
-USER_ZSH_DIR=$USER_SHELL_DIR/zsh
-USER_PLUGIN_DIR=$USER_ZSH_DIR/plugins
+export ZDOTDIR=$HOME/.config/zish
+USER_PLUGIN_DIR=$ZDOTDIR/plugins
 
 FORCE_ZSH_INSTALL=false
 
@@ -42,7 +40,7 @@ else
 fi
 
 autoload -U colors && colors
-#source (curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/zsh/scripts/revolver)
+#source (curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/scripts/revolver)
 function doprint()
 {
    printf $1
@@ -54,7 +52,7 @@ function show_header()
         clear
         doprint "$fg_bold[red]ZISH $fg[default]\n"
         doprint "$fg[cyan]Michael's ZSH Environment Setup Script.$fg[default]\n"
-        doprint "This script will setup the zsh environment in the user's \$HOME/.config/zish/zsh\n"
+        doprint "This script will setup the zsh environment in the user's \$HOME/.config/zish\n"
         doprint "folder to keep things clean.\n"
         doprint "\n"
         doprint "running under $fg[yellow]${OPSYS}$fg[default]\n"
@@ -91,8 +89,8 @@ function clean_zdotdir()
 {
         doprint  "$fg[cyan]INSTALLER:$fg[default] removing old shell files..."
         [[ ! -d ${HOME}/.config ]] && mkdir .config &> /dev/null
-        [[ -d ${USER_SHELL_DIR} ]] && rm -rf ${USER_SHELL_DIR} &> /dev/null
-        [[ ! -d ${USER_SHELL_DIR} ]] && mkdir -p ${USER_SHELL_DIR}  &> /dev/null
+        [[ -d ${ZDOTDIR} ]] && rm -rf ${ZDOTDIR} &> /dev/null
+        [[ ! -d ${ZDOTDIR} ]] && mkdir -p ${ZDOTDIR}  &> /dev/null
         #rename/backup existing zshrc
         [[ -L ${HOME}/.zshrc ]] && rm ${HOME}/.zshrc &> /dev/null
         [[ -f ${HOME}/.zshrc && ! -L ${HOME}/.zshrc  ]] && mv ${HOME}/.zshrc ~/.zshrc_old && rm -f ${HOME}/.zshrc
@@ -100,15 +98,6 @@ function clean_zdotdir()
         [[ -L ${HOME}/.zsh_history ]] && rm ${HOME}/.zsh_history &> /dev/null
         [[ -f ${HOME}/.zsh_history && ! -L ${HOME}/.zsh_history  ]] && mv ${HOME}/.zsh_history ~/.zsh_history_old && rm -f ${HOME}/.zsh_history
 
-        #if this is coming from a cloned repo, install from clone
-        if [[ -d ${PWD}/zsh && ${PWD} != ${HOME}/.config ]]; then
-                REPO_SOURCE="${PWD}/zsh"
-                cp -R ${REPO_SOURCE}/* ${USER_SHELL_DIR} &> /dev/null
-        else
-                [[ -d ${USER_SHELL_DIR} ]] && mkdir -p ${USER_SHELL_DIR} &> /dev/null
-                git clone --recurse-submodules ${REPO_SOURCE} $HOME/.config/zish &> /dev/null
-                #source $ZDOTDIR/.zshenv
-        fi
         doprint "$fg[green]Done.$fg[default]\n"
 }
 
@@ -301,7 +290,7 @@ function add_plugin_powerlevel10k()
         if [[ -f ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> ${ZDOTDIR}/.zshrc
                 #echo "source ${USER_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme" >> ${ZDOTDIR}/.zshrc
-                echo "# To customize prompt, run 'p10k configure' or edit ~/.config/${USER_ZPROFILE_SUBDIR}/zsh/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
+                echo "# To customize prompt, run 'p10k configure' or edit ~/.config/zish/.p10k.zsh." >> ${ZDOTDIR}/.zshrc
                 #echo "[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh" >> ${ZDOTDIR}/.zshrc
                 doprint "$fg[green]Done.$fg[default]\n"
         else

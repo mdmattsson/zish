@@ -193,7 +193,6 @@ function install_macos_apps()
         fi
 }
 
-#install fonts
 function install_fonts()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm fonts..."
@@ -229,13 +228,6 @@ function clean_previnstall_color_schemes()
                 doprint "$fg[red]Error.$fg[default]\n"
         fi
 }
-
-function it2prof()
-{
-        # Change iterm2 profile. Usage it2prof ProfileName (case sensitive)
-        echo "\033]50;SetProfile=$1\a"
-}
-
 
 function add_plugin_autojump()
         {
@@ -316,6 +308,12 @@ function add_plugin_powerlevel10k()
 function add_userpath_to_zshenv()
 {
         echo "export PATH=$PATH:$USER_PATH" >> $ZDOTDIR/.zshenv
+}
+
+function it2prof()
+{
+        # Change iterm2 profile. Usage it2prof ProfileName (case sensitive)
+        echo "\033]50;SetProfile=$1\a"
 }
 
 DISABLE_AUTO_TITLE="true"

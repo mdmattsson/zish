@@ -263,9 +263,7 @@ function add_plugin_autojump()
         else
                 doprint "$fg[red]Error.$fg[default]\n"
         fi
-
 }
-
 
 function add_plugin_highlighting()
 {

@@ -1,4 +1,5 @@
 # ZISH
+Michael Mattsson  
 
 Powerful ZSH shell preconfigured to work out of the box.
 
@@ -12,16 +13,16 @@ Powerful ZSH shell preconfigured to work out of the box.
   
   
 ### Notes: 
-- Files will reside in the users $HOME/.config/zish folder.  This will help keep the $HOME directory from becomming cluttered.   
+- Files will reside in the users ```$HOME/.config/zish``` folder.  This will help keep the $HOME directory from becomming cluttered.   
 - Aliases are split into multiple files in the zsh/aliases folder.  Filenames are only used to try and organize things.   Any files added to this folder will be read and aliases found within will be added automatically added.
-- Plugins can be found in the zsh/plugins folder.  I currently keep a copy of powerlevel10k in here with a custom configuration for convenience.  To update the prompt, type ```p10k configure``` at the command line and answer the questions 
+- Plugins can be found in the ```zsh/plugins``` sub-folder.  I currently keep a copy of powerlevel10k in here with a custom configuration for convenience.  To update the prompt, type ```p10k configure``` at the command line and answer the questions 
 - I make use of .zshenv.  A sumbolic link is created in the user's $HOME directory and points to $HOME/.config/zish/zsh/.zshenv
 
   
 ## Install:
 clone repo and run install.sh   
 or   
-zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh)    
+```zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh)```    
 
 
 ## Usage:
@@ -64,10 +65,10 @@ But be aware that this file is read even when Zsh is launched to run a single co
 I personally treat that file like .zshenv but for commands and variables which should be set once or which don't need to be updated frequently:
 
 environment variables to configure tools (flags for compilation, data folder location, etc.)
-configuration which execute commands (like SCONSFLAGS="--jobs=$(( $(nproc) - 1 ))") as it may take some time to execute.
+configuration which execute commands ```(like SCONSFLAGS="--jobs=$(( $(nproc) - 1 ))")``` as it may take some time to execute.
 If you modify this file, you can apply the configuration updates by running a login shell:
 
-exec zsh --login
+```exec zsh --login```
 
 ## .zshrc
 [Read when interactive]
@@ -88,7 +89,7 @@ other miscellaneous interactive tools (auto_cd, manydots-magic)...
 ## .zlogin
 [Read at login]
 
-This file is like .zprofile, but is read after .zshrc. You can consider the shell to be fully set up at .zlogin execution time
+This file is like ```.zprofile```, but is read after ```.zshrc```. You can consider the shell to be fully set up at ```.zlogin``` execution time
 
 So, I use it to launch external commands which do not modify shell behaviors (e.g. a login manager).  
 
@@ -97,11 +98,28 @@ So, I use it to launch external commands which do not modify shell behaviors (e.
 
 Here, you can clear your terminal or any other resource which was setup at login.  
   
-How I choose where to put a setting  
-if it is needed by a command run non-interactively: .zshenv  
-if it should be updated on each new shell: .zshenv  
-if it runs a command which may take some time to complete: .zprofile  
-if it is related to interactive usage: .zshrc  
-if it is a command to be run when the shell is fully setup: .zlogin  
-if it releases a resource acquired at login: .zlogout  
+
+For an excellent, in-depth explanation of what these files do, see What should/shouldn't go in ```.zshenv```, ```.zshrc```, ```.zlogin```, ```.zprofile```, on Unix/Linux.
+
+
+## Some Caveats
+Apple does things a little differently so it's best to be aware of it. Specifically, Terminal initially opens both a login and interactive shell even though you don't authenticate (enter login credentials). However, any subsequent shells that are opened are only interactive.
+
+You can test this out by putting an alias or setting a variable in .zprofile, then opening Terminal and seeing if that variable/alias exists. Then open another shell (type zsh); that variable won't be accessible anymore.
+
+SSH sessions are login and interactive so they'll behave just like your initial Terminal session and read both .zprofile and .zshrc
+
+Order of Operations
+This is the order in which these files get read. Keep in mind that it reads first from the system-wide file (i.e. /etc/zshenv) then from the file in your home directory (`~/.zshenv) as it goes through the order.
+
+```.zshenv``` → .```zprofile``` → ```.zshrc``` → ```.zlogin``` → ```.zlogout```
+
+
+## Best Practices
+if it is needed by a command run non-interactively: ```.zshenv```  
+if it should be updated on each new shell: ```.zshenv```  
+if it runs a command which may take some time to complete: ```.zprofile```  
+if it is related to interactive usage: ```.zshrc```  
+if it is a command to be run when the shell is fully setup: ```.zlogin```  
+if it releases a resource acquired at login: ```.zlogout```  
 

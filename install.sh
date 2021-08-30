@@ -234,7 +234,7 @@ function add_plugin_autojump()
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
         git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR/autojump &> /dev/null
-        if [[ -f $ZISH_PLUGIN_DIR}/autojump/bin/autojump.zsh ]]; then
+        if [[ -f $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh ]]; then
                 sed -i "" "s|~/.autojump/|"$ZISH_PLUGIN_DIR"/autojump|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh
                 sed -i "" "s|~/.autojump/|~/.cache/autojump/|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh
                 echo "# Load autojump." >> $ZDOTDIR/.zshrc
@@ -283,7 +283,7 @@ function add_plugin_sudo()
         mkdir -p $ZISH_PLUGIN_DIR/sudo && pushd $ZISH_PLUGIN_DIR/sudo && curl -O $SUDO_URL &> /dev/null && popd
         if [[ -f $ZISH_PLUGIN_DIR/sudo/sudo.plugin.zsh ]]; then
                 echo "# Load sudo" >> $ZDOTDIR/.zshrc
-                echo "source $ZISH_PLUGIN_DIR}/sudo/sudo.plugin.zsh" >> $ZDOTDIR/.zshrc
+                echo "source $ZISH_PLUGIN_DIR/sudo/sudo.plugin.zsh" >> $ZDOTDIR/.zshrc
                 doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"

@@ -13,8 +13,8 @@
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 
-USER_PATH=$PATH
-ZDOTDIR=$HOME/.config/zish/zsh
+export PATH="/opt/homebrew/bin:/usr/local/bin"
+export ZDOTDIR=$HOME/.config/zish/zsh
 USER_SHELL_DIR=$HOME/.config/zish
 USER_ZSH_DIR=$USER_SHELL_DIR/zsh
 USER_PLUGIN_DIR=$USER_ZSH_DIR/plugins
@@ -281,8 +281,7 @@ function add_plugin_powerlevel10k()
 
 function add_userpath_to_zshenv()
 {
-        #PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-        #echo "export PATH=$USER_PATH:$PATH" >> ${ZDOTDIR}/.zshenv
+        echo "export PATH=$USER_PATH:$PATH" >> ${ZDOTDIR}/.zshenv
 }
 
 show_header

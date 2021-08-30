@@ -197,6 +197,7 @@ function install_fonts()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm fonts..."
         git clone https://github.com/powerline/fonts.git $ZDOTDIR/fonts &> /dev/null
+        sleep 3
         if [[ -f $ZDOTDIR/fonts/install.sh ]]; then
                 pushd $ZDOTDIR/fonts
                 ./install.sh &> /dev/null
@@ -212,7 +213,7 @@ function clean_previnstall_color_schemes()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm color schemes..."
         git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git $ZDOTDIR/color-schemes &> /dev/null
-
+        sleep 3
         if [[ -f $ZDOTDIR/color-schemes/tools/import-scheme.sh ]]; then
                 #[[ ! -d $ZDOTDIR/color-schemes ]] && mkdir -p $ZDOTDIR/color-schemes
                 #cp -R zsh/color-schemes/* $ZDOTDIR/color-schemes/
@@ -234,6 +235,7 @@ function add_plugin_autojump()
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
         git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR/autojump &> /dev/null
+        sleep 3
         if [[ -f $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh ]]; then
                 sed -i "" "s|~/.autojump/|"$ZISH_PLUGIN_DIR"/autojump|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh
                 sed -i "" "s|~/.autojump/|~/.cache/autojump/|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh
@@ -252,6 +254,7 @@ function add_plugin_highlighting()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-syntax-highlighting..."
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZISH_PLUGIN_DIR/zsh-syntax-highlighting &> /dev/null
+        sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
                 echo "# Load zsh-syntax-highlighting." >> $ZDOTDIR/.zshrc
                 echo "source $ZISH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> $ZDOTDIR/.zshrc
@@ -266,6 +269,7 @@ function add_plugin_autosuggest()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-autosuggestions..."
         git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZISH_PLUGIN_DIR/zsh-autosuggestions &> /dev/null
+        sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
                 echo "# Load zsh-autosuggestions." >> $ZDOTDIR/.zshrc
                 echo "source $ZISH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh" >> $ZDOTDIR/.zshrc
@@ -281,6 +285,7 @@ function add_plugin_sudo()
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
         mkdir -p $ZISH_PLUGIN_DIR/sudo && pushd $ZISH_PLUGIN_DIR/sudo && curl -O $SUDO_URL &> /dev/null && popd
+        sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/sudo/sudo.plugin.zsh ]]; then
                 echo "# Load sudo" >> $ZDOTDIR/.zshrc
                 echo "source $ZISH_PLUGIN_DIR/sudo/sudo.plugin.zsh" >> $ZDOTDIR/.zshrc
@@ -294,6 +299,7 @@ function add_plugin_powerlevel10k()
 {
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZISH_PLUGIN_DIR/powerlevel10k &> /dev/null
+        sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> $ZDOTDIR/.zshrc
                 #echo "source $ZISH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme" >> $ZDOTDIR/.zshrc

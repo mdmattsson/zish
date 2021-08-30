@@ -241,7 +241,7 @@ function add_plugin_autojump()
         {
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
         doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
-        git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR}/autojump &> /dev/null
+        git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR/autojump &> /dev/null
         if [[ -f $ZISH_PLUGIN_DIR}/autojump/bin/autojump.zsh ]]; then
                 sed -i "" "s|~/.autojump/|"$ZISH_PLUGIN_DIR"/autojump|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh
                 sed -i "" "s|~/.autojump/|~/.cache/autojump/|" $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh

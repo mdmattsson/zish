@@ -281,8 +281,8 @@ function add_plugin_powerlevel10k()
 
 function add_userpath_to_zshenv()
 {
-        PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-        echo "export PATH=$USER_PATH:$PATH" >> ${ZDOTDIR}/.zshenv
+        #PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
+        #echo "export PATH=$USER_PATH:$PATH" >> ${ZDOTDIR}/.zshenv
 }
 
 show_header

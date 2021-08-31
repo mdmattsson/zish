@@ -89,7 +89,7 @@ function show_header()
 #clean previous
 function clean_zdotdir()
 {
-        doprint  "$fg[cyan]INSTALLER:$fg[default] removing old shell files..."
+        doprint  "$fg[cyan]ZISH:$fg[default] removing old shell files..."
         [[ ! -d $HOME/.config ]] && mkdir .config &> /dev/null
         [[ -d $ZDOTDIR ]] && rm -rf $ZDOTDIR &> /dev/null
         [[ ! -d $ZDOTDIR ]] && mkdir -p $ZDOTDIR  &> /dev/null
@@ -105,7 +105,7 @@ function clean_zdotdir()
 
 function install_zish()
 {
-        doprint  "$fg[cyan]INSTALLER:$fg[default] getting zish files..."
+        doprint  "$fg[cyan]ZISH:$fg[default] getting zish files..."
         pushd $HOME/.config
         git clone --recurse-submodules $REPO_SOURCE &> /dev/null
         popd
@@ -119,7 +119,7 @@ function install_zish()
 
 function setup_zdotdir_stuff()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] removing old zprofile..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] removing old zprofile..."
         [[ -L $HOME/.zshenv ]] && rm $HOME/.zshenv &> /dev/null
         [[ -f $HOME/.zshenv ]] && mv $HOME/.zshenv $HOME/.zshenv_old &> /dev/null
 
@@ -127,7 +127,7 @@ function setup_zdotdir_stuff()
         [[ -f $HOME/.zprofile ]] && mv $HOME/.zprofile $HOME/.zprofile_old &> /dev/null
         doprint "$fg[green]Done.$fg[default]\n"
 
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] creating new zprofile link..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] creating new zprofile link..."
         if windows; then
                 cp -p $ZDOTDIR/.zshenv $HOME/.zshenv &> /dev/null
                 #cp -p $ZDOTDIR/.zprofile $HOME/.zprofile &> /dev/null
@@ -175,28 +175,43 @@ function install_plugins()
 #MACOS Specific
 function install_macos_apps()
 {
-        if [[ $OPSYS=="MACOS" ]]; then
+        if [[ $OPSYS == "MACOS" ]]; then
                 #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                doprint  "$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
                 USER_PATH="/opt/homebrew/bin:$USER_PATH"
-
                 defaults write NSGlobalDomain KeyRepeat -int 0
-                alias thebrew='arch -x86_64 /usr/local/bin/brew'
-                [[ $OPSYS_SILICON=="ARM" ]] && alias thebrew='arch -arm64e /opt/homebrew/bin/brew'  
+                thebrew="arch -x86_64 /usr/local/bin/brew"
+                [[ $OPSYS_SILICON=="ARM" ]] && alias thebrew="arch -arm64e /opt/homebrew/bin/brew"
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
+                thebrew update &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew cask..."
                 thebrew install cask &> /dev/null
-                thebrew install --cask wget &> /dev/null
-                thebrew install --cask tree &> /dev/null
-                thebrew install --cask broot &> /dev/null
-                thebrew install --cask lf &> /dev/null
-                thebrew install --cask htop &> /dev/null
-                thebrew install --cask archey &> /dev/null
-                thebrew install --cask wifi-password &> /dev/null
-                thebrew install --cask nvm &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew wget..."
+                thebrew install wget &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew tree..."
+                thebrew install tree &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew broot..."
+                thebrew install broot &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew lf..."
+                thebrew install lf &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew htop..."
+                thebrew install htop &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew archey..."
+                thebrew install archey &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew wifi-password..."
+                thebrew install wifi-password &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew nvm..."
+                thebrew install nvm &> /dev/null
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] cleaning up homebrew..."
+                thebrew cleanup
+                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
+                doprint "$fg[green]Done.$fg[default]\n"
         fi
 }
 
 function install_fonts()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm fonts..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing iterm fonts..."
         git clone --depth=1 https://github.com/powerline/fonts.git $ZDOTDIR/fonts &> /dev/null
         sleep 3
         if [[ -f $ZDOTDIR/fonts/install.sh ]]; then
@@ -212,7 +227,7 @@ function install_fonts()
 # Import all color schemes
 function clean_previnstall_color_schemes()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing iterm color schemes..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing iterm color schemes..."
         git clone --depth=1 https://github.com/mbadolato/iTerm2-Color-Schemes.git $ZDOTDIR/color-schemes &> /dev/null
         sleep 3
         if [[ -f $ZDOTDIR/color-schemes/tools/import-scheme.sh ]]; then
@@ -233,7 +248,7 @@ function clean_previnstall_color_schemes()
 
 function add_plugin_antigen()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin antigen..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing plugin antigen..."
         local ANTIGEN_URL=git.io/antigen-nightly
         mkdir -p $ZISH_PLUGIN_DIR/antigen && pushd $ZISH_PLUGIN_DIR/antigen && curl -O $ANTIGEN_URL > antigen.zsh &> /dev/null && popd
         sleep 2
@@ -250,7 +265,7 @@ function add_plugin_antigen()
 function add_plugin_autojump()
         {
         #get_plugin "autojump" "https://github.com/ohmyzsh/ohmyzsh.git" "master/plugins/autojump"
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin autojump..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing plugin autojump..."
         git clone --depth=1 https://github.com/wting/autojump.git $ZISH_PLUGIN_DIR/autojump &> /dev/null
         sleep 3
         if [[ -f $ZISH_PLUGIN_DIR/autojump/bin/autojump.zsh ]]; then
@@ -267,7 +282,7 @@ function add_plugin_autojump()
 
 function add_plugin_highlighting()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-syntax-highlighting..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing plugin zsh-syntax-highlighting..."
         git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git $ZISH_PLUGIN_DIR/zsh-syntax-highlighting &> /dev/null
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
@@ -282,7 +297,7 @@ function add_plugin_highlighting()
 
 function add_plugin_autosuggest()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin zsh-autosuggestions..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing plugin zsh-autosuggestions..."
         git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git $ZISH_PLUGIN_DIR/zsh-autosuggestions &> /dev/null
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
@@ -297,7 +312,7 @@ function add_plugin_autosuggest()
 
 function add_plugin_sudo()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin sudo.plugin..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing plugin sudo.plugin..."
         local SUDO_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
         mkdir -p $ZISH_PLUGIN_DIR/sudo && pushd $ZISH_PLUGIN_DIR/sudo && curl -O $SUDO_URL &> /dev/null && popd
         sleep 2
@@ -312,7 +327,7 @@ function add_plugin_sudo()
 
 function add_plugin_powerlevel10k()
 {
-        doprint  "$fg_bold[cyan]INSTALLER:$fg[default] installing plugin powerlevel10k..."
+        doprint  "$fg_bold[cyan]ZISH:$fg[default] installing plugin powerlevel10k..."
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZISH_PLUGIN_DIR/powerlevel10k &> /dev/null
         sleep 2
         if [[ -f $ZISH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme ]]; then
@@ -369,11 +384,28 @@ function zish_install() {
 }
 
 function zish_uninstall() {
-        echo "Sorry.  Not implemented yet."
+        doprint  "$fg_bold[red]ZISH:$fg[default] uninstalling zish..."
+        rm -rf ~/.config/zish &> /dev/null
+        [[ -L $HOME/.zshrc ]] && rm $HOME/.zshrc &> /dev/null
+        if [[ ! -d ~/.config/zish && ! -f $HOME/.zshrc ]]; then
+                doprint "$fg[green]Done.$fg[default]\n"
+        else
+                doprint "$fg[red]Error.$fg[default]\n"
+        fi
 }
 
 function zish_update() {
-        echo "Sorry.  Not implemented yet."
+        doprint  "$fg_bold[red]ZISH:$fg[default] updating zish..."
+        if [[ ! -d ~/.config/zish ]]; then
+                pushd $ZDOTDIR
+                git pull &> /dev/null
+                popd
+                zish_reload
+        else
+                doprint "$fg[yellow]Not installed.$fg[default]\n"
+                doprint "$fg[yellow]Zish is not currently installed.$fg[default]\n"
+        fi
+
 }
 
 function zish_configure() {
@@ -406,7 +438,6 @@ function zish_main() {
         fi
         if [[ $ZISH_COMMAND == "reload" ]]; then
                 zish_reload "$ZISH_ARGS"
-                zish_reload
         fi
         if [[ $ZISH_COMMAND == "configure" ]]; then
                 zish_configure "$ZISH_ARGS"

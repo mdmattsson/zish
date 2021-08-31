@@ -181,8 +181,14 @@ function install_plugins()
 function install_macos_apps()
 {
         if [[ $OPSYS == "MACOS" ]]; then
-                #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
                 doprint  "$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
+                which -s brew
+                if [[ $? != 0 ]] ; then
+                        # Install Homebrew
+                        doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
+                        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+                fi
+
                 USER_PATH="/opt/homebrew/bin:$USER_PATH"
                 defaults write NSGlobalDomain KeyRepeat -int 0
                 #thebrew="arch -x86_64 /usr/local/bin/brew"
@@ -191,23 +197,27 @@ function install_macos_apps()
                 brew update &> /dev/null
                 doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew cask..."
                 brew install cask &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew wget..."
+                if [ ! -d '/Applications/iTerm.app' -a ! -d "$HOME/Applications/iTerm.app" ]; then
+                        doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing iTerm2..."
+                        brew cask install iterm2
+                fi
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing wget..."
                 brew install wget &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew tree..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing tree..."
                 brew install tree &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew broot..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing broot..."
                 brew install broot &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew lf..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing lf..."
                 brew install lf &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew htop..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing htop..."
                 brew install htop &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew archey..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing archey..."
                 brew install archey &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew wifi-password..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing wifi-password..."
                 brew install wifi-password &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew nvm..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing nvm..."
                 brew install nvm &> /dev/null
-                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] cleaning up homebrew..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] cleaning up..."
                 brew cleanup &> /dev/null
                 doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
                 doprint "$fg[green]Done.$fg[default]\n"
@@ -230,7 +240,7 @@ function install_fonts()
 }
 
 # Import all color schemes
-function clean_previnstall_color_schemes()
+function install_color_schemes()
 {
         doprint  "$fg_bold[cyan]ZISH:$fg[default] installing iterm color schemes..."
         git clone --depth=1 https://github.com/mbadolato/iTerm2-Color-Schemes.git $ZDOTDIR/color-schemes &> /dev/null
@@ -373,10 +383,10 @@ function zish_install() {
         setup_zdotdir_stuff
         setup_cache
         # apps & scripts 
-        install_plugins
         install_macos_apps
         install_fonts
-        clean_previnstall_color_schemes
+        install_color_schemes
+        install_plugins
         # it2prof "Default"
         add_plugin_antigen
         add_plugin_autojump

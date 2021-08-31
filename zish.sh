@@ -380,9 +380,13 @@ function zish_configure() {
         p10k configure
 }
 function zish_reload() {
-       if [[ $OPSYS == "MACOS" && $SHELL == "zsh" ]]; then
-               exec zsh -l
-       fi
+        if test -n "$ZSH_VERSION"; then       
+                if [[ $OPSYS == "MACOS" ]]; then
+                        exec zsh -l
+                else
+                        exec zsh
+                fi
+        fi
 }
 
 function zish_main() {

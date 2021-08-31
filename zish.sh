@@ -182,7 +182,7 @@ function install_macos_apps()
 {
         if [[ $OPSYS == "MACOS" ]]; then
                 doprint  "$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
-                which -s brew
+                which -s brew &> /dev/null
                 if [[ $? != 0 ]] ; then
                         # Install Homebrew
                         doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
@@ -398,9 +398,9 @@ function zish_install() {
         add_userpath_to_zshenv
         echo ""
         doprint "$fg[green]ZISH installation complete.$fg[default]\n"
-        doprint "$fg[default]run `zish install` to install zish.$fg[default]\n"
-        doprint "$fg[default]run `zish update` to update zish.$fg[default]\n"
-        doprint "$fg[default]run `zish uninstall` to uninstall zish.$fg[default]\n"
+        doprint "$fg[default]run '$fg[green]zish install$fg[default]' to install zish.$fg[default]\n"
+        doprint "$fg[default]run '$fg[green]zish update$fg[default]' to update zish.$fg[default]\n"
+        doprint "$fg[default]run '$fg[green]zish uninstall'$fg[default] to uninstall zish.$fg[default]\n"
         echo ""
 }
 

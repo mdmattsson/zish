@@ -17,6 +17,7 @@ ZDOTDIR=$HOME/.config/zish
 ZISH_PLUGIN_DIR=$ZDOTDIR/plugins
 FORCE_ZSH_INSTALL=false
 
+PATH=$PATH:ZDOTDIR
 USER_PATH=$ZDOTDIR
 
 windows() { [[ -n "$WINDIR" ]]; }
@@ -166,7 +167,6 @@ function get_plugin()
 function install_plugins()
 {
         [[ ! -d $ZISH_PLUGIN_DIR ]] && mkdir -p $ZISH_PLUGIN_DIR &> /dev/null
-
         echo "#" >> $ZDOTDIR/.zshrc
         echo "# ZSH PLUGINS" >> $ZDOTDIR/.zshrc
 }

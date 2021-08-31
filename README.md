@@ -1,5 +1,6 @@
 # ZISH
 Michael Mattsson  
+mattsson@ymail.com  
 
 Powerful ZSH shell preconfigured to work out of the box.
 
@@ -112,7 +113,7 @@ SSH sessions are login and interactive so they'll behave just like your initial 
 Order of Operations
 This is the order in which these files get read. Keep in mind that it reads first from the system-wide file (i.e. /etc/zshenv) then from the file in your home directory (`~/.zshenv) as it goes through the order.
 
-```.zshenv``` → .```zprofile``` → ```.zshrc``` → ```.zlogin``` → ```.zlogout```
+```.zshenv``` → ```.zprofile``` → ```.zshrc``` → ```.zlogin``` → ```.zlogout```
 
 
 ## Best Practices

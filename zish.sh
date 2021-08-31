@@ -57,7 +57,7 @@ function show_header()
         doprint "This script will setup the zsh environment in the user's \$HOME/.config/zish\n"
         doprint "folder to keep things clean.\n"
         doprint "\n"
-        doprint "running under $fg[yellow]${OPSYS}$fg[default]\n"
+        doprint "running under $fg[yellow]${OPSYS} ${OPSYS_SILICON}$fg[default]\n"
         doprint "\n"
 }
 
@@ -107,7 +107,8 @@ function install_zish()
 {
         doprint  "$fg[cyan]ZISH:$fg[default] getting zish files..."
         pushd $HOME/.config
-        git clone --recurse-submodules $REPO_SOURCE &> /dev/null
+        git clone --recurse-submodules --single-branch -b main $REPO_SOURCE &> /dev/null
+        sleep 2
         popd
         if [[ -d $ZDOTDIR ]]; then
                 doprint "$fg[green]Done.$fg[default]\n"
@@ -180,30 +181,30 @@ function install_macos_apps()
                 doprint  "$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
                 USER_PATH="/opt/homebrew/bin:$USER_PATH"
                 defaults write NSGlobalDomain KeyRepeat -int 0
-                thebrew="arch -x86_64 /usr/local/bin/brew"
-                [[ $OPSYS_SILICON=="ARM" ]] && alias thebrew="arch -arm64e /opt/homebrew/bin/brew"
+                #thebrew="arch -x86_64 /usr/local/bin/brew"
+                #[[ $OPSYS_SILICON == "ARM" ]] && thebrew="arch -arm64e /opt/homebrew/bin/brew"
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
-                thebrew update &> /dev/null
+                brew update &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew cask..."
-                thebrew install cask &> /dev/null
+                brew install cask &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew wget..."
-                thebrew install wget &> /dev/null
+                brew install wget &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew tree..."
-                thebrew install tree &> /dev/null
+                brew install tree &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew broot..."
-                thebrew install broot &> /dev/null
+                brew install broot &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew lf..."
-                thebrew install lf &> /dev/null
+                brew install lf &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew htop..."
-                thebrew install htop &> /dev/null
+                brew install htop &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew archey..."
-                thebrew install archey &> /dev/null
+                brew install archey &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew wifi-password..."
-                thebrew install wifi-password &> /dev/null
+                brew install wifi-password &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew nvm..."
-                thebrew install nvm &> /dev/null
+                brew install nvm &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] cleaning up homebrew..."
-                thebrew cleanup
+                brew cleanup &> /dev/null
                 doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
                 doprint "$fg[green]Done.$fg[default]\n"
         fi

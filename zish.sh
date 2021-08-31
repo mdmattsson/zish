@@ -379,25 +379,33 @@ function zish_update() {
 function zish_configure() {
         p10k configure
 }
+function zish_reload() {
+       source $ZDORDIR/.zshenv
+       source $ZDORDIR/.zshrc
+}
 
 function zish_main() {
         ZISH_COMMAND=$1
         ZISH_ARGS=$2
         if [[ $ZISH_COMMAND == "" || $ZISH_COMMAND == "install" ]]; then
                 zish_install "$ZISH_ARGS"
-                exec $SHELL
+                zish_reload
         fi
         if [[ $ZISH_COMMAND == "uninstall" ]]; then
                 zish_uninstall "$ZISH_ARGS"
-                exec $SHELL
+                zish_reload
         fi
         if [[ $ZISH_COMMAND == "update" ]]; then
                 zish_update "$ZISH_ARGS"
-                exec $SHELL
+                zish_reload
+        fi
+        if [[ $ZISH_COMMAND == "reload" ]]; then
+                zish_reload "$ZISH_ARGS"
+                zish_reload
         fi
         if [[ $ZISH_COMMAND == "configure" ]]; then
                 zish_configure "$ZISH_ARGS"
-                exec $SHELL
+                zish_reload
         fi
 }
 

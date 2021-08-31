@@ -183,29 +183,29 @@ function install_macos_apps()
                 defaults write NSGlobalDomain KeyRepeat -int 0
                 #thebrew="arch -x86_64 /usr/local/bin/brew"
                 #[[ $OPSYS_SILICON == "ARM" ]] && thebrew="arch -arm64e /opt/homebrew/bin/brew"
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
                 brew update &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew cask..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew cask..."
                 brew install cask &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew wget..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew wget..."
                 brew install wget &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew tree..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew tree..."
                 brew install tree &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew broot..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew broot..."
                 brew install broot &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew lf..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew lf..."
                 brew install lf &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew htop..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew htop..."
                 brew install htop &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew archey..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew archey..."
                 brew install archey &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew wifi-password..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew wifi-password..."
                 brew install wifi-password &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew nvm..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew nvm..."
                 brew install nvm &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] cleaning up homebrew..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] cleaning up homebrew..."
                 brew cleanup &> /dev/null
-                doprint  "\r$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
+                doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing homebrew..."
                 doprint "$fg[green]Done.$fg[default]\n"
         fi
 }
@@ -382,6 +382,9 @@ function zish_install() {
         add_plugin_powerlevel10k
         # final zsh settings...
         add_userpath_to_zshenv
+        echo ""
+        doprint "$fg[green]Zish installation complete.$fg[default]\n"
+        echo ""
 }
 
 function zish_uninstall() {
@@ -402,6 +405,9 @@ function zish_update() {
                 git pull &> /dev/null
                 popd
                 zish_reload
+                echo ""
+                doprint "$fg[green]Zish update complete.$fg[default]\n"
+                echo ""
         else
                 doprint "$fg[yellow]Not installed.$fg[default]\n"
                 doprint "$fg[yellow]Zish is not currently installed.$fg[default]\n"

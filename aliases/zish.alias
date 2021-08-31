@@ -1,1 +1,1 @@
-alias -g zish="$ZDOTDIR/zish/zish.sh"
+alias -g zish="$ZDOTDIR/zish.sh"

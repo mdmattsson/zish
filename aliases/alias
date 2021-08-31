@@ -24,8 +24,6 @@ extract ()
     echo "'$1' is not a valid file"
   fi
 }
-
-alias update-shell="sh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh)"
 alias pacman-update='sudo pacman-mirrors --geoip'
 
 # Command line head / tail shortcuts

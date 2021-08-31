@@ -21,9 +21,9 @@ Powerful ZSH shell preconfigured to work out of the box.
 
   
 ## Install:
-clone repo and run install.sh   
+clone repo and run zish.sh   
 or   
-```zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh)```    
+```zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/zish.sh)```    
 
 
 ## Usage:

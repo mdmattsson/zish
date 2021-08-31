@@ -7,9 +7,9 @@
 # https://github.com/mdmattsson
 #
 # to install, simply copy the commandline below. run this installer
-# zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh)
+# zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/zish.sh)
 
-REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/install.sh
+REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/zish.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 ZISH_LOG=$PWD/zish.log # &> /dev/null
 [[ -f $ZISH_LOG ]] && rm $ZISH_LOG
@@ -318,7 +318,7 @@ function add_plugin_powerlevel10k()
         if [[ -f $ZISH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme ]]; then
                 echo "# Load powerlevel10k." >> $ZDOTDIR/.zshrc
                 echo "source $ZISH_PLUGIN_DIR/powerlevel10k/powerlevel10k.zsh-theme" >> $ZDOTDIR/.zshrc
-                echo "# To customize prompt, run `p10k configure` or edit $ZDOTDIR/.p10k.zsh." >> $ZDOTDIR/.zshrc
+                echo "# To customize prompt, run 'p10k configure' or edit $ZDOTDIR/.p10k.zsh." >> $ZDOTDIR/.zshrc
                 echo "[[ ! -f "$ZDOTDIR"/.p10k.zsh ]] || source "$ZDOTDIR"/.p10k.zsh" >> $ZDOTDIR/.zshrc
                 echo "" >> $ZDOTDIR/.zshrc
                 doprint "$fg[green]Done.$fg[default]\n"
@@ -329,7 +329,7 @@ function add_plugin_powerlevel10k()
 
 function add_userpath_to_zshenv()
 {
-        echo "export PATH=$PATH:$USER_PATH" >> $ZDOTDIR/.zshenv
+        echo "export PATH="$PATH":"$USER_PATH >> $ZDOTDIR/.zshenv
 }
 
 function it2prof()
@@ -343,28 +343,62 @@ function set_terminal_title() {
   echo -en "\e]2;$@\a"
 }
 
-set_terminal_title "ZISH Installer"
-show_header
-#maintenance stuff
-clean_zdotdir
-install_zish
-setup_zdotdir_stuff
-setup_cache
-#apps & scripts 
-install_plugins
-install_macos_apps
-install_fonts
-clean_previnstall_color_schemes
-#it2prof "Default"
-add_plugin_antigen
-add_plugin_autojump
-add_plugin_highlighting
-add_plugin_autosuggest
-add_plugin_sudo
-add_plugin_powerlevel10k
-#final zsh settings...
-add_userpath_to_zshenv
 
-doprint  "\n$fg_bold[green]ZISH$fg[green] installation completed.$fg[default].\n"
-doprint  "$fg[yellow]please quit and restart iterm$fg[default].\n"
- 
+function zish_install() {
+        set_terminal_title "ZISH Installer"
+        show_header
+        # maintenance stuff
+        clean_zdotdir
+        install_zish
+        setup_zdotdir_stuff
+        setup_cache
+        # apps & scripts 
+        install_plugins
+        install_macos_apps
+        install_fonts
+        clean_previnstall_color_schemes
+        # it2prof "Default"
+        add_plugin_antigen
+        add_plugin_autojump
+        add_plugin_highlighting
+        add_plugin_autosuggest
+        add_plugin_sudo
+        add_plugin_powerlevel10k
+        # final zsh settings...
+        add_userpath_to_zshenv
+}
+
+function zish_uninstall() {
+        echo "Sorry.  Not implemented yet."
+}
+
+function zish_update() {
+        echo "Sorry.  Not implemented yet."
+}
+
+function zish_configure() {
+        p10k configure
+}
+
+function zish_main() {
+        ZISH_COMMAND=$1
+        ZISH_ARGS=$2
+        if [[ $ZISH_COMMAND == "" || $ZISH_COMMAND == "install" ]]; then
+                zish_install "$ZISH_ARGS"
+                exec $SHELL
+        fi
+        if [[ $ZISH_COMMAND == "uninstall" ]]; then
+                zish_uninstall "$ZISH_ARGS"
+                exec $SHELL
+        fi
+        if [[ $ZISH_COMMAND == "update" ]]; then
+                zish_update "$ZISH_ARGS"
+                exec $SHELL
+        fi
+        if [[ $ZISH_COMMAND == "configure" ]]; then
+                zish_configure "$ZISH_ARGS"
+                exec $SHELL
+        fi
+}
+
+zish_main "$@"

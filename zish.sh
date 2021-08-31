@@ -389,9 +389,9 @@ function zish_install() {
 
 function zish_uninstall() {
         doprint  "$fg_bold[red]ZISH:$fg[default] uninstalling zish..."
-        rm -rf ~/.config/zish &> /dev/null
+        rm -rf $HOME/.config/zish &> /dev/null
         [[ -L $HOME/.zshrc ]] && rm $HOME/.zshrc &> /dev/null
-        if [[ ! -d ~/.config/zish && ! -f $HOME/.zshrc ]]; then
+        if [[ ! -d $HOME/.config/zish && ! -f $HOME/.zshrc ]]; then
                 doprint "$fg[green]Done.$fg[default]\n"
         else
                 doprint "$fg[red]Error.$fg[default]\n"
@@ -400,7 +400,7 @@ function zish_uninstall() {
 
 function zish_update() {
         doprint  "$fg_bold[red]ZISH:$fg[default] updating zish..."
-        if [[ ! -d ~/.config/zish ]]; then
+        if [[ ! -d $HOME/.config/zish ]]; then
                 pushd $ZDOTDIR
                 git pull &> /dev/null
                 popd

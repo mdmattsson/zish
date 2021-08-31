@@ -186,7 +186,7 @@ function install_macos_apps()
                 if [[ $? != 0 ]] ; then
                         # Install Homebrew
                         doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] updating homebrew..."
-                        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+                        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &> /dev/null
                 fi
 
                 USER_PATH="/opt/homebrew/bin:$USER_PATH"
@@ -199,7 +199,7 @@ function install_macos_apps()
                 brew install cask &> /dev/null
                 if [ ! -d '/Applications/iTerm.app' -a ! -d "$HOME/Applications/iTerm.app" ]; then
                         doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing iTerm2..."
-                        brew cask install iterm2
+                        brew cask install iterm2 &> /dev/null
                 fi
                 doprint  "\r\033[K$fg_bold[cyan]ZISH:$fg[default] installing wget..."
                 brew install wget &> /dev/null

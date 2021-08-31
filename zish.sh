@@ -380,8 +380,9 @@ function zish_configure() {
         p10k configure
 }
 function zish_reload() {
-       source $ZDORDIR/.zshenv
-       source $ZDORDIR/.zshrc
+       if [[ $OPSYS == "MACOS" && $SHELL == "zsh" ]]; then
+               exec zsh -l
+       fi
 }
 
 function zish_main() {

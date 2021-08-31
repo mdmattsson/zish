@@ -9,6 +9,7 @@
 # to install, simply copy the commandline below. run this installer
 # zsh <(curl -s https://raw.githubusercontent.com/mdmattsson/zish/main/zish.sh)
 
+
 REPO_INSTALLER=https://raw.githubusercontent.com/mdmattsson/zish/main/zish.sh
 REPO_SOURCE=https://github.com/mdmattsson/zish.git
 ZISH_LOG=$PWD/zish.log # &> /dev/null
@@ -52,8 +53,11 @@ function doprint()
 function show_header()
 {
         clear
-        doprint "$fg_bold[red]ZISH $fg[default]\n"
-        doprint "$fg[cyan]Michael's ZSH Environment Setup Script.$fg[default]\n"
+        doprint "$fg_bold[cyan] ____ _  ___  _ _ $fg[default]\n"
+        doprint "$fg_bold[cyan]|_  /| |/ __>| | |$fg[default]\n"
+        doprint "$fg_bold[cyan] / / | |\__ \|   |$fg[default]\n"
+        doprint "$fg_bold[cyan]/___||_|<___/|_|_|$fg[default]\n" 
+        doprint "$fg[magenta]ZSH Environment Setup Script.$fg[default]\n"
         doprint "This script will setup the zsh environment in the user's \$HOME/.config/zish\n"
         doprint "folder to keep things clean.\n"
         doprint "\n"
@@ -383,7 +387,7 @@ function zish_install() {
         # final zsh settings...
         add_userpath_to_zshenv
         echo ""
-        doprint "$fg[green]Zish installation complete.$fg[default]\n"
+        doprint "$fg[green]ZISH installation complete.$fg[default]\n"
         echo ""
 }
 
@@ -406,11 +410,11 @@ function zish_update() {
                 popd
                 zish_reload
                 echo ""
-                doprint "$fg[green]Zish update complete.$fg[default]\n"
+                doprint "$fg[green]ZISH update complete.$fg[default]\n"
                 echo ""
         else
                 doprint "$fg[yellow]Not installed.$fg[default]\n"
-                doprint "$fg[yellow]Zish is not currently installed.$fg[default]\n"
+                doprint "$fg[yellow]ZISH is not currently installed.$fg[default]\n"
         fi
 
 }

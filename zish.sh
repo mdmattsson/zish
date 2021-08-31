@@ -388,6 +388,9 @@ function zish_install() {
         add_userpath_to_zshenv
         echo ""
         doprint "$fg[green]ZISH installation complete.$fg[default]\n"
+        doprint "$fg[default]run `zish install` to install zish.$fg[default]\n"
+        doprint "$fg[default]run `zish update` to update zish.$fg[default]\n"
+        doprint "$fg[default]run `zish uninstall` to uninstall zish.$fg[default]\n"
         echo ""
 }
 
